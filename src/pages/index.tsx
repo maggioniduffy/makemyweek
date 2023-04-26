@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { Inter } from "next/font/google";
-import { ActivitySelector, Welcome } from "@/components";
+import { ActivitySelector, OptionsSelector, Welcome } from "@/components";
 import "animate.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -13,7 +13,7 @@ export default function Home() {
         <meta name="Creador de calendario semanal. Organiza tus clases, entrenamientos, cursos o lo que necesites" />
       </Head>
       <header className="fixed py-4 z-50 bg h-fit text-center w-full">
-        <h1 className="text-4xl text-pink font-medium text-shadow">
+        <h1 className="text-2xl text-lightpink font-medium text-shadow">
           {" "}
           Make My Week{" "}
         </h1>
@@ -23,6 +23,7 @@ export default function Home() {
       >
         <Welcome />
         <ActivitySelector />
+        <OptionsSelector />
       </main>
     </div>
   );

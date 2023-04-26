@@ -4,6 +4,7 @@ export interface Option {
 }
 
 export interface Activity {
+  id: number;
   name: string;
   options?: [Option];
 }
