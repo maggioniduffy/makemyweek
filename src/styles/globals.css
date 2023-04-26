@@ -6,6 +6,82 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --mimi-pink: #ffdde2ff;
+  --fandango: #bd2d87ff;
+  --dark-purple: #242038ff;
+  --xanthous: #e6af2eff;
+  --dark-purple-2: #26081cff;
+  --gradient-top: linear-gradient(
+    0deg,
+    #ffdde2ff,
+    #bd2d87ff,
+    #242038ff,
+    #e6af2eff,
+    #26081cff
+  );
+  --gradient-right: linear-gradient(
+    90deg,
+    #ffdde2ff,
+    #bd2d87ff,
+    #242038ff,
+    #e6af2eff,
+    #26081cff
+  );
+  --gradient-bottom: linear-gradient(
+    180deg,
+    #ffdde2ff,
+    #bd2d87ff,
+    #242038ff,
+    #e6af2eff,
+    #26081cff
+  );
+  --gradient-left: linear-gradient(
+    270deg,
+    #ffdde2ff,
+    #bd2d87ff,
+    #242038ff,
+    #e6af2eff,
+    #26081cff
+  );
+  --gradient-top-right: linear-gradient(
+    45deg,
+    #ffdde2ff,
+    #bd2d87ff,
+    #242038ff,
+    #e6af2eff,
+    #26081cff
+  );
+  --gradient-bottom-right: linear-gradient(
+    135deg,
+    #ffdde2ff,
+    #bd2d87ff,
+    #242038ff,
+    #e6af2eff,
+    #26081cff
+  );
+  --gradient-top-left: linear-gradient(
+    225deg,
+    #ffdde2ff,
+    #bd2d87ff,
+    #242038ff,
+    #e6af2eff,
+    #26081cff
+  );
+  --gradient-bottom-left: linear-gradient(
+    315deg,
+    #ffdde2ff,
+    #bd2d87ff,
+    #242038ff,
+    #e6af2eff,
+    #26081cff
+  );
+  --gradient-radial: radial-gradient(
+    #ffdde2ff,
+    #bd2d87ff,
+    #242038ff,
+    #e6af2eff,
+    #26081cff
+  );
 }
 
 @media (prefers-color-scheme: dark) {
@@ -16,12 +92,20 @@
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: #242038;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 1200 800'%3E%3Cdefs%3E%3CradialGradient id='a' cx='0' cy='800' r='800' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%2326152b'/%3E%3Cstop offset='1' stop-color='%2326152b' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='b' cx='1200' cy='800' r='800' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%2364316c'/%3E%3Cstop offset='1' stop-color='%2364316c' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='c' cx='600' cy='0' r='600' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%236c1c50'/%3E%3Cstop offset='1' stop-color='%236c1c50' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='d' cx='600' cy='800' r='600' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%23242038'/%3E%3Cstop offset='1' stop-color='%23242038' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='e' cx='0' cy='0' r='800' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%2326081C'/%3E%3Cstop offset='1' stop-color='%2326081C' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='f' cx='1200' cy='0' r='800' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%23BD2D87'/%3E%3Cstop offset='1' stop-color='%23BD2D87' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect fill='url(%23a)' width='1200' height='800'/%3E%3Crect fill='url(%23b)' width='1200' height='800'/%3E%3Crect fill='url(%23c)' width='1200' height='800'/%3E%3Crect fill='url(%23d)' width='1200' height='800'/%3E%3Crect fill='url(%23e)' width='1200' height='800'/%3E%3Crect fill='url(%23f)' width='1200' height='800'/%3E%3C/svg%3E");
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.bg {
+  background-color: #242038;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 1200 800'%3E%3Cdefs%3E%3CradialGradient id='a' cx='0' cy='800' r='800' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%2326152b'/%3E%3Cstop offset='1' stop-color='%2326152b' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='b' cx='1200' cy='800' r='800' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%2364316c'/%3E%3Cstop offset='1' stop-color='%2364316c' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='c' cx='600' cy='0' r='600' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%236c1c50'/%3E%3Cstop offset='1' stop-color='%236c1c50' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='d' cx='600' cy='800' r='600' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%23242038'/%3E%3Cstop offset='1' stop-color='%23242038' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='e' cx='0' cy='0' r='800' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%2326081C'/%3E%3Cstop offset='1' stop-color='%2326081C' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='f' cx='1200' cy='0' r='800' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%23BD2D87'/%3E%3Cstop offset='1' stop-color='%23BD2D87' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect fill='url(%23a)' width='1200' height='800'/%3E%3Crect fill='url(%23b)' width='1200' height='800'/%3E%3Crect fill='url(%23c)' width='1200' height='800'/%3E%3Crect fill='url(%23d)' width='1200' height='800'/%3E%3Crect fill='url(%23e)' width='1200' height='800'/%3E%3Crect fill='url(%23f)' width='1200' height='800'/%3E%3C/svg%3E");
+  background-attachment: fixed;
+  background-size: cover;
 }

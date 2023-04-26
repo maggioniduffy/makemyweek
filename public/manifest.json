@@ -1,0 +1,9 @@
+{
+  "name": "MakeMyWeek",
+  "short_name": "MMW",
+  "theme_color": "#e6af2eff",
+  "background_color": "#242038ff",
+  "display": "fullScreen",
+  "scope": "/",
+  "start_url": "/"
+}
