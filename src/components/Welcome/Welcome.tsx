@@ -1,5 +1,5 @@
 import React from "react";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import { DownButton } from "../Common";
 
 const Welcome = () => {
   return (
@@ -14,12 +14,7 @@ const Welcome = () => {
           Comienza a preparar tu semana <b> desde ahora </b>
         </h5>
       </div>
-      <a
-        href="#activity"
-        className="mt-4 animate__animated animate__bounce animate__delay-2s hover:bg-pink rounded-full"
-      >
-        <ArrowDownwardIcon fontSize="large" htmlColor="white" />
-      </a>
+      <DownButton next="activity" />
     </div>
   );
 };

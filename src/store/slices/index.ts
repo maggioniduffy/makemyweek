@@ -1,4 +1,4 @@
-import { Activity } from "./../../models/index";
+import { Activity, Option } from "./../../models/index";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 
@@ -6,11 +6,24 @@ interface WeekState {
   activities: Array<Activity>;
 }
 
+interface AddOptionDTO {
+  option: Option;
+  activityId: number;
+}
+
 const initialState: WeekState = {
   activities: [
     {
       id: 0,
       name: "",
+      options: [
+        {
+          priority: 1,
+          start: { hour: 8, minute: 0 },
+          end: { hour: 10, minute: 0 },
+          day: 0,
+        },
+      ],
     },
   ],
 };
@@ -22,6 +35,14 @@ export const activitySlice = createSlice({
       const activity: Activity = {
         id,
         name: "",
+        options: [
+          {
+            priority: 1,
+            start: { hour: 8, minute: 0 },
+            end: { hour: 10, minute: 0 },
+            day: 0,
+          },
+        ],
       };
       state.activities.push(activity);
     },
@@ -40,12 +61,17 @@ export const activitySlice = createSlice({
       newList[id] = newActivity;
       state.activities = newList;
     },
+    addOption: (state, action: PayloadAction<AddOptionDTO>) => {
+      const { activityId, option } = action.payload;
+      const act = state.activities[activityId];
+      act.options?.push(option);
+    },
   },
   name: "week",
-  initialState,
+  initialState: initialState as WeekState,
 });
 //; actions
-export const { addActivity, removeActivity, editActivity } =
+export const { addActivity, addOption, removeActivity, editActivity } =
   activitySlice.actions;
 
 // selectors  ;
