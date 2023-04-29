@@ -1,4 +1,4 @@
-import { Activity, Option } from "./../../models/index";
+import { Activity, Option, Day, Moment } from "./../../models/index";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 
@@ -11,6 +11,12 @@ interface AddOptionDTO {
   activityId: number;
 }
 
+interface EditDayDTO {
+  activityId: number;
+  priority: number;
+  day: Day;
+}
+
 const initialState: WeekState = {
   activities: [
     {
@@ -20,7 +26,7 @@ const initialState: WeekState = {
         {
           priority: 1,
           start: { hour: 8, minute: 0 },
-          end: { hour: 10, minute: 0 },
+          end: { hour: 9, minute: 0 },
           day: 0,
         },
       ],
@@ -39,7 +45,7 @@ export const activitySlice = createSlice({
           {
             priority: 1,
             start: { hour: 8, minute: 0 },
-            end: { hour: 10, minute: 0 },
+            end: { hour: 9, minute: 0 },
             day: 0,
           },
         ],
@@ -66,13 +72,73 @@ export const activitySlice = createSlice({
       const act = state.activities[activityId];
       act.options?.push(option);
     },
+    removeOption: (
+      state,
+      action: PayloadAction<{ activityId: number; priority: number }>
+    ) => {
+      const { activityId, priority } = action.payload;
+      const copy = state.activities[activityId].options.filter(
+        (op) => op.priority != priority
+      );
+      const res = copy.map((c, i) => ({ ...c, priority: i + 1 }));
+      state.activities[activityId].options = res;
+    },
+    updateDay: (state, action: PayloadAction<EditDayDTO>) => {
+      const { activityId, priority, day } = action.payload;
+      const act: Activity = state.activities[activityId];
+      if (act.options) {
+        const newOptions = [...act.options];
+        newOptions[priority - 1].day = day;
+        act.options = newOptions;
+      }
+    },
+    updateStartTime: (
+      state,
+      action: PayloadAction<{
+        activityId: number;
+        priority: number;
+        time: Moment;
+      }>
+    ) => {
+      const { activityId, priority, time } = action.payload;
+      const act: Activity = state.activities[activityId];
+      if (act.options) {
+        const newOptions = [...act.options];
+        newOptions[priority - 1].start = time;
+        act.options = newOptions;
+      }
+    },
+    updateEndTime: (
+      state,
+      action: PayloadAction<{
+        activityId: number;
+        priority: number;
+        time: Moment;
+      }>
+    ) => {
+      const { activityId, priority, time } = action.payload;
+      const act: Activity = state.activities[activityId];
+      if (act.options) {
+        const newOptions = [...act.options];
+        newOptions[priority - 1].end = time;
+        act.options = newOptions;
+      }
+    },
   },
   name: "week",
   initialState: initialState as WeekState,
 });
 //; actions
-export const { addActivity, addOption, removeActivity, editActivity } =
-  activitySlice.actions;
+export const {
+  addActivity,
+  addOption,
+  removeActivity,
+  editActivity,
+  updateDay,
+  removeOption,
+  updateStartTime,
+  updateEndTime,
+} = activitySlice.actions;
 
 // selectors  ;
 export const selectActivities = (state: RootState) => state.week.activities;

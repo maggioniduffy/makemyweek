@@ -21,7 +21,7 @@ const ActivitySelector = () => {
 
   const updateActivity = (e: any, name: string, id: number) => {
     e.preventDefault();
-    dispatch(editActivity({ name, id }));
+    dispatch(editActivity({ name: name.toUpperCase(), id }));
   };
 
   const appendActivity = () => {
@@ -32,7 +32,7 @@ const ActivitySelector = () => {
   return (
     <Section id="activity" next="options">
       <Selector>
-        <>
+        <div className="w-96 flex flex-col place-items-center">
           <h4 className="text-center text-fandango text-2xl font-medium">
             {" "}
             Ingresa tus actividades de la semana{" "}
@@ -43,7 +43,7 @@ const ActivitySelector = () => {
                 <div key={"" + i} className="flex space-x-2 justify-between">
                   <input
                     value={act.name}
-                    className="bg-white border-darkpurple rounded shadow mt-2 h-12 w-full p-2"
+                    className="bg-white border border-darkpurple rounded shadow mt-2 h-12 w-full p-2"
                     onChange={(e) => updateActivity(e, e.target.value, i)}
                   />
                   <button
@@ -60,7 +60,7 @@ const ActivitySelector = () => {
             {" "}
             <AddCircleOutlinedIcon className="text-darkpurple" />{" "}
           </button>
-        </>
+        </div>
       </Selector>
     </Section>
   );

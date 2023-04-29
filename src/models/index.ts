@@ -29,15 +29,18 @@ weekDays.set(3, "Jueves");
 weekDays.set(4, "Viernes");
 weekDays.set(5, "Sabado");
 
+export type Day = 0 | 1 | 2 | 3 | 4 | 5;
+
 export interface Option {
   priority: number;
   start: Moment;
   end: Moment;
-  day: 0 | 1 | 2 | 3 | 4 | 5;
+  day: Day;
 }
 
 export interface Activity {
   id: number;
   name: string;
-  options?: [Option];
+  //options?: [Option];
+  options: Option[];
 }
