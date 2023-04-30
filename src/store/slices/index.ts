@@ -70,7 +70,10 @@ export const activitySlice = createSlice({
     addOption: (state, action: PayloadAction<AddOptionDTO>) => {
       const { activityId, option } = action.payload;
       const act = state.activities[activityId];
-      act.options?.push(option);
+      const options = act.options;
+      const newOptions = [...options, option];
+      const newAct = { ...act, options: newOptions };
+      state.activities[activityId] = newAct;
     },
     removeOption: (
       state,
@@ -88,8 +91,9 @@ export const activitySlice = createSlice({
       const act: Activity = state.activities[activityId];
       if (act.options) {
         const newOptions = [...act.options];
-        newOptions[priority - 1].day = day;
-        act.options = newOptions;
+        newOptions[priority - 1].day = day as Day;
+        const newAct = { ...act, options: newOptions };
+        state.activities[activityId] = newAct;
       }
     },
     updateStartTime: (
@@ -105,7 +109,8 @@ export const activitySlice = createSlice({
       if (act.options) {
         const newOptions = [...act.options];
         newOptions[priority - 1].start = time;
-        act.options = newOptions;
+        const newAct = { ...act, options: newOptions };
+        state.activities[activityId] = newAct;
       }
     },
     updateEndTime: (
@@ -121,7 +126,8 @@ export const activitySlice = createSlice({
       if (act.options) {
         const newOptions = [...act.options];
         newOptions[priority - 1].end = time;
-        act.options = newOptions;
+        const newAct = { ...act, options: newOptions };
+        state.activities[activityId] = newAct;
       }
     },
   },

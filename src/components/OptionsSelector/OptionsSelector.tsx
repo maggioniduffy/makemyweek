@@ -52,11 +52,12 @@ const OptionsSelector = () => {
 
   const appendOption = (id: number) => {
     const options = activities[id].options!;
+    alert("prioridad" + options?.length);
     dispatch(
       addOption({
         activityId: id,
         option: {
-          priority: options ? options.length + 1 : 1,
+          priority: options.length + 1,
           start: {
             hour: 8,
             minute: 0,
@@ -75,7 +76,7 @@ const OptionsSelector = () => {
     e.preventDefault();
     const day = e.target.value as Day;
     dispatch(updateDay({ activityId: id, priority, day }));
-    console.log(activities);
+    console.log("editday", activities);
   };
 
   const deleteOption = (activityId: number, priority: number) => {
@@ -142,6 +143,8 @@ const OptionsSelector = () => {
                           activities[a.id].options[o.priority].start.minute;
                       }
 
+                      console.log(a.id + ": " + o.priority);
+
                       return (
                         <div
                           key={a.id + o.priority + ""}
@@ -159,14 +162,9 @@ const OptionsSelector = () => {
                             placeholder="Dia"
                             className="bg-white w-fit text-darkpurple p-1 border-none rounded h-full my-1"
                             onChange={(e) => editDay(a.id, o.priority, e)}
-                            value={
-                              weekDays.get(
-                                activities[a.id]?.options[o.priority]?.day
-                              ) &&
-                              weekDays.get(
-                                activities[a.id]?.options[o.priority]?.day
-                              )
-                            }
+                            value={weekDays.get(
+                              activities[a.id]?.options[o.priority]?.day
+                            )}
                           >
                             {days.map(({ label, value }) => (
                               <option key={label} value={value}>
