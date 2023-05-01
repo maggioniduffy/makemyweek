@@ -50,6 +50,8 @@ export const activitySlice = createSlice({
           },
         ],
       };
+      const newActivities = [...state.activities, activity];
+      return { ...state, activities: newActivities };
       state.activities.push(activity);
     },
     removeActivity: (state, action: PayloadAction<{ id: number }>) => {
