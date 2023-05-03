@@ -35,7 +35,7 @@ export interface Option {
   priority: number;
   start: Moment;
   end: Moment;
-  day: Day;
+  day: number;
 }
 
 export interface Activity {

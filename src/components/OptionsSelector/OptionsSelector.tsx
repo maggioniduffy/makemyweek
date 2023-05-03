@@ -19,6 +19,7 @@ import { Day, Option, weekDays } from "../../models";
 import RemoveCircleOutlinedIcon from "@mui/icons-material/RemoveCircleOutlined";
 import Button from "@mui/material/Button";
 import dayjs from "dayjs";
+import { useEffect } from "react";
 
 const days = [
   {
@@ -50,9 +51,10 @@ const OptionsSelector = () => {
   const activities = useAppSelector(selectActivities);
   const dispatch = useAppDispatch();
 
+  useEffect(() => {}, [activities]);
+
   const appendOption = (id: number) => {
     const options = activities[id].options!;
-    alert("prioridad" + options?.length);
     dispatch(
       addOption({
         activityId: id,
@@ -75,6 +77,7 @@ const OptionsSelector = () => {
   const editDay = (id: number, priority: number, e: any) => {
     e.preventDefault();
     const day = e.target.value as Day;
+    console.log("dia: ", day);
     dispatch(updateDay({ activityId: id, priority, day }));
     console.log("editday", activities);
   };
@@ -84,8 +87,6 @@ const OptionsSelector = () => {
   };
 
   const updateInitTime = (activityId: number, priority: number, v: any) => {
-    console.log(v.$H);
-    console.log(v.$m);
     dispatch(
       updateStartTime({
         activityId,
@@ -99,18 +100,29 @@ const OptionsSelector = () => {
   };
 
   const updateFinishTime = (activityId: number, priority: number, v: any) => {
-    console.log(v.$H);
-    console.log(v.$m);
-    dispatch(
-      updateEndTime({
-        activityId,
-        priority,
-        time: {
-          hour: v.$H,
-          minute: v.$m,
-        },
-      })
+    const aux = activities[activityId].options.filter(
+      (a) => a.priority == priority
     );
+    console.log(aux);
+    const startTime = activities[activityId].options[priority - 1].start;
+    if (
+      v.$H > startTime.hour ||
+      (v.$H == startTime.hour && v.$m > startTime.minute)
+    ) {
+      dispatch(
+        updateEndTime({
+          activityId,
+          priority,
+          time: {
+            hour: v.$H,
+            minute: v.$m,
+          },
+        })
+      );
+    } else {
+      alert("error");
+    }
+    console.log(activities[activityId].options);
   };
 
   return (
@@ -133,17 +145,16 @@ const OptionsSelector = () => {
                       let endMinute = 0;
                       let startHour = 8;
                       let startMinute = 0;
-                      if (activities[a.id]?.options[o.priority]?.end) {
-                        endHour = activities[a.id].options[o.priority].end.hour;
+                      if (activities[a.id]?.options[o.priority - 1]?.end) {
+                        endHour =
+                          activities[a.id].options[o.priority - 1].end.hour;
                         endMinute =
-                          activities[a.id].options[o.priority].end.minute;
+                          activities[a.id].options[o.priority - 1].end.minute;
                         startHour =
-                          activities[a.id].options[o.priority].start.hour;
+                          activities[a.id].options[o.priority - 1].start.hour;
                         startMinute =
-                          activities[a.id].options[o.priority].start.minute;
+                          activities[a.id].options[o.priority - 1].start.minute;
                       }
-
-                      console.log(a.id + ": " + o.priority);
 
                       return (
                         <div
@@ -163,7 +174,7 @@ const OptionsSelector = () => {
                             className="bg-white w-fit text-darkpurple p-1 border-none rounded h-full my-1"
                             onChange={(e) => editDay(a.id, o.priority, e)}
                             value={weekDays.get(
-                              activities[a.id]?.options[o.priority]?.day
+                              activities[a.id]?.options[o.priority - 1]?.day
                             )}
                           >
                             {days.map(({ label, value }) => (
@@ -185,6 +196,9 @@ const OptionsSelector = () => {
                               value={dayjs(
                                 `2022-04-17T${startHour}:${startMinute}`
                               )}
+                              maxTime={dayjs(
+                                `2022-04-17T${endHour}:${endMinute}`
+                              )}
                             />
                           </div>
                           <div className="w-fit lex flex-col">
@@ -199,6 +213,9 @@ const OptionsSelector = () => {
                               }
                               value={dayjs(
                                 `2022-04-17T${endHour}:${endMinute}`
+                              )}
+                              minTime={dayjs(
+                                `2022-04-17T${startHour}:${startMinute + 1}`
                               )}
                             />
                           </div>

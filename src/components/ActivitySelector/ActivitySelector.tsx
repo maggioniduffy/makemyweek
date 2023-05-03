@@ -9,10 +9,13 @@ import RemoveCircleOutlinedIcon from "@mui/icons-material/RemoveCircleOutlined";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import { Section } from "../Common";
 import Selector from "../Common/Selector";
+import { Button } from "@mui/base";
+import { useEffect, useState } from "react";
 
 const ActivitySelector = () => {
   const activities = useAppSelector(selectActivities);
   const dispatch = useAppDispatch();
+  const [disabled, setDisabled] = useState(false);
 
   const deleteActivity = (e: any, id: number) => {
     e.preventDefault();
@@ -28,6 +31,19 @@ const ActivitySelector = () => {
     console.log(activities);
     dispatch(addActivity());
   };
+
+  const checkLast = () => {
+    const l = activities.length - 1;
+    const last = activities[l];
+    const st = last.name.length > 1;
+    if (st == disabled) {
+      setDisabled(!disabled);
+    }
+  };
+
+  useEffect(() => {
+    checkLast();
+  }, [activities]);
 
   return (
     <Section id="activity" next="options">
@@ -56,10 +72,17 @@ const ActivitySelector = () => {
               );
             })}
           </form>
-          <button className="m-6" onClick={() => appendActivity()}>
+          <Button
+            className="m-6"
+            onClick={() => appendActivity()}
+            disabled={disabled}
+          >
             {" "}
-            <AddCircleOutlinedIcon className="text-darkpurple" />{" "}
-          </button>
+            <AddCircleOutlinedIcon
+              className="text-darkpurple"
+              color={disabled ? "disabled" : "inherit"}
+            />{" "}
+          </Button>
         </div>
       </Selector>
     </Section>

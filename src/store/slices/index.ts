@@ -1,5 +1,5 @@
 import { Activity, Option, Day, Moment } from "./../../models/index";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 
 interface WeekState {
@@ -14,7 +14,7 @@ interface AddOptionDTO {
 interface EditDayDTO {
   activityId: number;
   priority: number;
-  day: Day;
+  day: number;
 }
 
 const initialState: WeekState = {
@@ -50,53 +50,100 @@ export const activitySlice = createSlice({
           },
         ],
       };
-      const newActivities = [...state.activities, activity];
-      return { ...state, activities: newActivities };
+      //const newActivities = [...state.activities, activity];
+      //return { ...state, activities: newActivities };
       state.activities.push(activity);
     },
     removeActivity: (state, action: PayloadAction<{ id: number }>) => {
       const copy = state.activities.filter((ac) => ac.id != action.payload.id);
       state.activities = copy;
+      //return { ...state, activities: copy };
     },
     editActivity: (
       state,
       action: PayloadAction<{ name: string; id: number }>
     ) => {
       const { id, name } = action.payload;
-      const activity = state.activities[id];
-      const newActivity = { ...activity, name };
-      const newList = [...state.activities];
-      newList[id] = newActivity;
-      state.activities = newList;
+      let index = -1;
+      state.activities.forEach((a, i) => {
+        if (a.id == id) {
+          index = i;
+        }
+      });
+
+      if (index >= 0) state.activities[index].name = name;
+      // const act = { ...state.activities[id], name };
+      // const acts = state.activities;
+      // acts[id] = act;
+      // return { ...state, activities: acts };
     },
     addOption: (state, action: PayloadAction<AddOptionDTO>) => {
       const { activityId, option } = action.payload;
-      const act = state.activities[activityId];
-      const options = act.options;
-      const newOptions = [...options, option];
-      const newAct = { ...act, options: newOptions };
-      state.activities[activityId] = newAct;
+      let index = -1;
+      state.activities.forEach((a, i) => {
+        if (a.id == activityId) {
+          index = i;
+        }
+      });
+
+      if (index >= 0) {
+        //state.activities[index].options.push(option);}
+        const newOptions = [...state.activities[index].options, option];
+        state.activities[index].options = newOptions;
+      }
+      // const acts = [...state.activities];
+      // const act = acts[activityId];
+      // const options = act.options;
+      // const newOptions = [...options, option];
+      // const newAct = { ...act, options: newOptions };
+      // acts[activityId] = newAct;
+      // return { ...state, activities: acts };
+      // state.activities[activityId] = newAct;
     },
     removeOption: (
       state,
       action: PayloadAction<{ activityId: number; priority: number }>
     ) => {
       const { activityId, priority } = action.payload;
-      const copy = state.activities[activityId].options.filter(
-        (op) => op.priority != priority
-      );
-      const res = copy.map((c, i) => ({ ...c, priority: i + 1 }));
-      state.activities[activityId].options = res;
+      let index = -1;
+      state.activities.forEach((a, i) => {
+        if (a.id == activityId) {
+          index = i;
+        }
+      });
+      if (index >= 0) {
+        state.activities[index].options.splice(priority - 1, 1);
+        state.activities[index].options.forEach((o, i) => (o.priority = i + 1));
+      }
     },
     updateDay: (state, action: PayloadAction<EditDayDTO>) => {
       const { activityId, priority, day } = action.payload;
-      const act: Activity = state.activities[activityId];
-      if (act.options) {
-        const newOptions = [...act.options];
-        newOptions[priority - 1].day = day as Day;
-        const newAct = { ...act, options: newOptions };
-        state.activities[activityId] = newAct;
+      console.log("day en reducer ", typeof day);
+      console.log("pr en reducer ", priority);
+
+      let index = -1;
+      state.activities.forEach((a, i) => {
+        if (a.id == activityId) {
+          index = i;
+        }
+      });
+      if (index >= 0) {
+        const ix = priority - 1;
+        state.activities[index].options[ix].day = day;
       }
+      // alert(state.activities[activityId].options[priority - 1].day);
+      // const acts = [...state.activities];
+      // const act = acts[activityId];
+      // if (act.options) {
+      //   act.options[priority - 1].day = day;
+      //   const newOptions = [...act.options];
+      //   console.log("newoptions", newOptions);
+      //   newOptions[priority - 1].day = day as Day;
+      //   const newAct = { ...act, options: newOptions };
+      //   acts[activityId] = newAct;
+      //   return { ...state, activities: acts };
+      // }
+      // return { ...state };
     },
     updateStartTime: (
       state,
@@ -107,30 +154,52 @@ export const activitySlice = createSlice({
       }>
     ) => {
       const { activityId, priority, time } = action.payload;
-      const act: Activity = state.activities[activityId];
-      if (act.options) {
-        const newOptions = [...act.options];
-        newOptions[priority - 1].start = time;
-        const newAct = { ...act, options: newOptions };
-        state.activities[activityId] = newAct;
+      let index = -1;
+      state.activities.forEach((a, i) => {
+        if (a.id == activityId) {
+          index = i;
+        }
+      });
+      if (index >= 0) {
+        const ix = priority - 1;
+        state.activities[index].options[ix].start = time;
+
+        console.log("OPTION", current(state.activities[index].options));
       }
+      // const acts = [...state.activities];
+      // const act = acts[activityId];
+      // const newOptions = [...act.options];
+      // newOptions[priority - 1].start = time;
+      // const newAct = { ...act, options: newOptions };
+      // acts[activityId] = newAct;
+      // return { ...state, activities: acts };
     },
-    updateEndTime: (
+    updateEndTime(
       state,
       action: PayloadAction<{
         activityId: number;
         priority: number;
         time: Moment;
       }>
-    ) => {
+    ) {
       const { activityId, priority, time } = action.payload;
-      const act: Activity = state.activities[activityId];
-      if (act.options) {
-        const newOptions = [...act.options];
-        newOptions[priority - 1].end = time;
-        const newAct = { ...act, options: newOptions };
-        state.activities[activityId] = newAct;
+      let index = -1;
+      state.activities.forEach((a, i) => {
+        if (a.id == activityId) {
+          index = i;
+        }
+      });
+      if (index >= 0) {
+        const ix = priority - 1;
+        state.activities[index].options[ix].end = time;
       }
+      // const acts = [...state.activities];
+      // const act = acts[activityId];
+      // const newOptions = [...act.options];
+      // newOptions[priority - 1].end = time;
+      // const newAct = { ...act, options: newOptions };
+      // acts[activityId] = newAct;
+      // return { ...state, activities: acts };
     },
   },
   name: "week",
