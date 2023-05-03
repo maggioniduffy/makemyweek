@@ -14,7 +14,7 @@ interface AddOptionDTO {
 interface EditDayDTO {
   activityId: number;
   priority: number;
-  day: number;
+  day: Day;
 }
 
 const initialState: WeekState = {

@@ -46,7 +46,7 @@ const ActivitySelector = () => {
   }, [activities]);
 
   return (
-    <Section id="activity" next="options">
+    <Section id="activity" next="options" disable={disabled}>
       <Selector>
         <div className="w-96 flex flex-col place-items-center">
           <h4 className="text-center text-fandango text-2xl font-medium">
