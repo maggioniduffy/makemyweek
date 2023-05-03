@@ -1,5 +1,5 @@
-import { Activity, Option, Day, Moment } from "./../../models/index";
-import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
+import { Activity, Option, Day, Moment, Turn } from "./../../models/index";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 
 interface WeekState {
@@ -15,7 +15,14 @@ interface EditDayDTO {
   activityId: number;
   priority: number;
   day: Day;
+  index: number;
 }
+
+const baseTurn: Turn = {
+  start: { hour: 8, minute: 0 },
+  end: { hour: 9, minute: 0 },
+  day: 0,
+};
 
 const initialState: WeekState = {
   activities: [
@@ -25,9 +32,7 @@ const initialState: WeekState = {
       options: [
         {
           priority: 1,
-          start: { hour: 8, minute: 0 },
-          end: { hour: 9, minute: 0 },
-          day: 0,
+          turns: [baseTurn],
         },
       ],
     },
@@ -44,20 +49,15 @@ export const activitySlice = createSlice({
         options: [
           {
             priority: 1,
-            start: { hour: 8, minute: 0 },
-            end: { hour: 9, minute: 0 },
-            day: 0,
+            turns: [baseTurn],
           },
         ],
       };
-      //const newActivities = [...state.activities, activity];
-      //return { ...state, activities: newActivities };
       state.activities.push(activity);
     },
     removeActivity: (state, action: PayloadAction<{ id: number }>) => {
       const copy = state.activities.filter((ac) => ac.id != action.payload.id);
       state.activities = copy;
-      //return { ...state, activities: copy };
     },
     editActivity: (
       state,
@@ -72,10 +72,6 @@ export const activitySlice = createSlice({
       });
 
       if (index >= 0) state.activities[index].name = name;
-      // const act = { ...state.activities[id], name };
-      // const acts = state.activities;
-      // acts[id] = act;
-      // return { ...state, activities: acts };
     },
     addOption: (state, action: PayloadAction<AddOptionDTO>) => {
       const { activityId, option } = action.payload;
@@ -87,18 +83,9 @@ export const activitySlice = createSlice({
       });
 
       if (index >= 0) {
-        //state.activities[index].options.push(option);}
         const newOptions = [...state.activities[index].options, option];
         state.activities[index].options = newOptions;
       }
-      // const acts = [...state.activities];
-      // const act = acts[activityId];
-      // const options = act.options;
-      // const newOptions = [...options, option];
-      // const newAct = { ...act, options: newOptions };
-      // acts[activityId] = newAct;
-      // return { ...state, activities: acts };
-      // state.activities[activityId] = newAct;
     },
     removeOption: (
       state,
@@ -117,33 +104,17 @@ export const activitySlice = createSlice({
       }
     },
     updateDay: (state, action: PayloadAction<EditDayDTO>) => {
-      const { activityId, priority, day } = action.payload;
-      console.log("day en reducer ", typeof day);
-      console.log("pr en reducer ", priority);
-
-      let index = -1;
+      const { activityId, priority, day, index } = action.payload;
+      let index0 = -1;
       state.activities.forEach((a, i) => {
         if (a.id == activityId) {
-          index = i;
+          index0 = i;
         }
       });
-      if (index >= 0) {
+      if (index0 >= 0) {
         const ix = priority - 1;
-        state.activities[index].options[ix].day = day;
+        state.activities[index0].options[ix].turns[index].day = day;
       }
-      // alert(state.activities[activityId].options[priority - 1].day);
-      // const acts = [...state.activities];
-      // const act = acts[activityId];
-      // if (act.options) {
-      //   act.options[priority - 1].day = day;
-      //   const newOptions = [...act.options];
-      //   console.log("newoptions", newOptions);
-      //   newOptions[priority - 1].day = day as Day;
-      //   const newAct = { ...act, options: newOptions };
-      //   acts[activityId] = newAct;
-      //   return { ...state, activities: acts };
-      // }
-      // return { ...state };
     },
     updateStartTime: (
       state,
@@ -151,38 +122,50 @@ export const activitySlice = createSlice({
         activityId: number;
         priority: number;
         time: Moment;
+        index: number;
       }>
     ) => {
-      const { activityId, priority, time } = action.payload;
-      let index = -1;
+      const { activityId, priority, time, index } = action.payload;
+      let index0 = -1;
       state.activities.forEach((a, i) => {
         if (a.id == activityId) {
-          index = i;
+          index0 = i;
         }
       });
-      if (index >= 0) {
+      if (index0 >= 0) {
         const ix = priority - 1;
-        state.activities[index].options[ix].start = time;
-
-        console.log("OPTION", current(state.activities[index].options));
+        state.activities[index0].options[ix].turns[index].start = time;
       }
-      // const acts = [...state.activities];
-      // const act = acts[activityId];
-      // const newOptions = [...act.options];
-      // newOptions[priority - 1].start = time;
-      // const newAct = { ...act, options: newOptions };
-      // acts[activityId] = newAct;
-      // return { ...state, activities: acts };
     },
-    updateEndTime(
+    updateEndTime: (
       state,
       action: PayloadAction<{
         activityId: number;
         priority: number;
         time: Moment;
+        index: number;
       }>
-    ) {
-      const { activityId, priority, time } = action.payload;
+    ) => {
+      const { activityId, priority, time, index } = action.payload;
+      let index0 = -1;
+      state.activities.forEach((a, i) => {
+        if (a.id == activityId) {
+          index0 = i;
+        }
+      });
+      if (index0 >= 0) {
+        const ix = priority - 1;
+        state.activities[index0].options[ix].turns[index].end = time;
+      }
+    },
+    addTurn: (
+      state,
+      action: PayloadAction<{
+        activityId: number;
+        priority: number;
+      }>
+    ) => {
+      const { activityId, priority } = action.payload;
       let index = -1;
       state.activities.forEach((a, i) => {
         if (a.id == activityId) {
@@ -190,16 +173,28 @@ export const activitySlice = createSlice({
         }
       });
       if (index >= 0) {
-        const ix = priority - 1;
-        state.activities[index].options[ix].end = time;
+        state.activities[index].options[priority - 1].turns.push(baseTurn);
       }
-      // const acts = [...state.activities];
-      // const act = acts[activityId];
-      // const newOptions = [...act.options];
-      // newOptions[priority - 1].end = time;
-      // const newAct = { ...act, options: newOptions };
-      // acts[activityId] = newAct;
-      // return { ...state, activities: acts };
+    },
+    removeTurn: (
+      state,
+      action: PayloadAction<{
+        activityId: number;
+        priority: number;
+        ix: number;
+      }>
+    ) => {
+      const { activityId, priority, ix } = action.payload;
+      let index = -1;
+      state.activities.forEach((a, i) => {
+        if (a.id == activityId) {
+          index = i;
+        }
+      });
+      if (index >= 0) {
+        state.activities[index].options[priority - 1].turns.splice(ix, 1);
+        //state.activities[index].options.forEach((o, i) => (o.priority = i + 1));
+      }
     },
   },
   name: "week",

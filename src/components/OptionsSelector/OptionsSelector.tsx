@@ -27,15 +27,19 @@ const OptionsSelector = () => {
         activityId: id,
         option: {
           priority: options.length + 1,
-          start: {
-            hour: 8,
-            minute: 0,
-          },
-          end: {
-            hour: 9,
-            minute: 0,
-          },
-          day: 0,
+          turns: [
+            {
+              start: {
+                hour: 8,
+                minute: 0,
+              },
+              end: {
+                hour: 9,
+                minute: 0,
+              },
+              day: 0,
+            },
+          ],
         },
       })
     );

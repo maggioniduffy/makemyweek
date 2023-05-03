@@ -31,11 +31,14 @@ weekDays.set(5, "Sabado");
 
 export type Day = 0 | 1 | 2 | 3 | 4 | 5;
 
-export interface Option {
-  priority: number;
+export interface Turn {
   start: Moment;
   end: Moment;
   day: Day;
+}
+export interface Option {
+  priority: number;
+  turns: Turn[];
 }
 
 export interface Activity {
