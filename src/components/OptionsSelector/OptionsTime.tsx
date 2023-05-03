@@ -11,10 +11,11 @@ import React from "react";
 interface Props {
   id: number;
   priority: number;
+  index: number;
   start?: boolean;
 }
 
-const OptionsTime = ({ id, priority, start = false }: Props) => {
+const OptionsTime = ({ id, priority, index, start = false }: Props) => {
   const activities = useAppSelector(selectActivities);
   const dispatch = useAppDispatch();
 
@@ -27,6 +28,7 @@ const OptionsTime = ({ id, priority, start = false }: Props) => {
           hour: v.$H,
           minute: v.$m,
         },
+        index,
       })
     );
   };
@@ -35,7 +37,8 @@ const OptionsTime = ({ id, priority, start = false }: Props) => {
     const aux = activities[activityId].options.filter(
       (a) => a.priority == priority
     );
-    const startTime = activities[activityId].options[priority - 1].start;
+    const startTime =
+      activities[activityId].options[priority - 1].turns[index].start;
     if (
       v.$H > startTime.hour ||
       (v.$H == startTime.hour && v.$m > startTime.minute)
@@ -48,6 +51,7 @@ const OptionsTime = ({ id, priority, start = false }: Props) => {
             hour: v.$H,
             minute: v.$m,
           },
+          index,
         })
       );
     }
@@ -58,11 +62,12 @@ const OptionsTime = ({ id, priority, start = false }: Props) => {
     let endMinute = 0;
     let startHour = 8;
     let startMinute = 0;
-    if (activities[id]?.options[priority - 1]?.end) {
-      endHour = activities[id].options[priority - 1].end.hour;
-      endMinute = activities[id].options[priority - 1].end.minute;
-      startHour = activities[id].options[priority - 1].start.hour;
-      startMinute = activities[id].options[priority - 1].start.minute;
+    if (activities[id]?.options[priority - 1]?.turns[index].end) {
+      endHour = activities[id].options[priority - 1].turns[index].end.hour;
+      endMinute = activities[id].options[priority - 1].turns[index].end.minute;
+      startHour = activities[id].options[priority - 1].turns[index].start.hour;
+      startMinute =
+        activities[id].options[priority - 1].turns[index].start.minute;
     }
     return { startHour, startMinute, endHour, endMinute };
   };

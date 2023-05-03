@@ -1,11 +1,14 @@
 import { useAppSelector, useAppDispatch } from "../../hooks";
-import { selectActivities, addOption, removeOption } from "../../store/slices";
-import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
+import {
+  selectActivities,
+  addOption,
+  removeOption,
+  addTurn,
+  removeTurn,
+} from "../../store/slices";
 import { Section } from "../Common";
 import Selector from "../Common/Selector";
-import RemoveCircleOutlinedIcon from "@mui/icons-material/RemoveCircleOutlined";
 import Button from "@mui/material/Button";
-import { useEffect } from "react";
 import OptionsTimeSelector from "./OptionsTime";
 import OptionsDay from "./OptionsDay";
 
@@ -49,6 +52,14 @@ const OptionsSelector = () => {
     dispatch(removeOption({ activityId, priority }));
   };
 
+  const appendTurn = (activityId: number, priority: number) => {
+    dispatch(addTurn({ activityId, priority }));
+  };
+
+  const deleteTurn = (activityId: number, priority: number, ix: number) => {
+    dispatch(removeTurn({ activityId, priority, ix }));
+  };
+
   return (
     <Section id="options">
       <div className="flex h-full w-fit m-auto place-items-center p-6 space-x-4 justify-start align-start">
@@ -68,37 +79,83 @@ const OptionsSelector = () => {
                       return (
                         <div
                           key={a.id + o.priority + ""}
-                          className="flex w-full p-2 border place-items-center justify-between space-x-2 p-1 rounded border-gray shadow"
+                          className="flex w-full p-2 border place-items-center justify-between space-y-2 p-1 rounded border-gray shadow"
                         >
-                          <div className="h-full w-10 flex flex-col place-items-center justify-center space-y-2">
-                            <p className="font-bold bg-darkpurple rounded-full p-1 text-white text-center flex flex-col">
+                          <div className="h-full w-full flex flex-col place-items-center justify-start my-4">
+                            <h5 className="text-darkpurple rounded p-1 text-left">
                               {" "}
-                              {o.priority}
-                            </p>
+                              Horario {o.priority}
+                            </h5>
+                            <div className="my-2 flex flex-col">
+                              <Button
+                                onClick={() => deleteOption(a.id, o.priority)}
+                                size="small"
+                                color="secondary"
+                                variant="contained"
+                              >
+                                Borrar horario
+                              </Button>
+                            </div>
                           </div>
-                          <OptionsDay id={a.id} priority={o.priority} />
-                          <OptionsTimeSelector
-                            id={a.id}
-                            priority={o.priority}
-                            start
-                          />
-                          <OptionsTimeSelector
-                            id={a.id}
-                            priority={o.priority}
-                          />
-                          <Button
-                            onClick={() => deleteOption(a.id, o.priority)}
-                            className="w-8"
-                          >
-                            <RemoveCircleOutlinedIcon className="text-darkpurple" />
-                          </Button>
+                          <div className="flex flex-col space-y-4">
+                            <div className="flex flex-col w-full place-items-center">
+                              {o.turns.map((t, i) => {
+                                return (
+                                  <div
+                                    className="flex shadow-lg rounded p-2"
+                                    key={a.id + o.priority + i + ""}
+                                  >
+                                    <OptionsDay
+                                      id={a.id}
+                                      priority={o.priority}
+                                      index={i}
+                                    />
+                                    <OptionsTimeSelector
+                                      id={a.id}
+                                      priority={o.priority}
+                                      start
+                                      index={i}
+                                    />
+                                    <OptionsTimeSelector
+                                      id={a.id}
+                                      priority={o.priority}
+                                      index={i}
+                                    />
+                                    <Button
+                                      size="small"
+                                      color="secondary"
+                                      onClick={() =>
+                                        deleteTurn(a.id, o.priority, i)
+                                      }
+                                    >
+                                      Borrar dia
+                                    </Button>
+                                  </div>
+                                );
+                              })}
+                            </div>
+
+                            <Button
+                              onClick={() => appendTurn(a.id, o.priority)}
+                              size="small"
+                              color="secondary"
+                            >
+                              Agregar dia
+                            </Button>
+                          </div>
                         </div>
                       );
                     })}
                   </form>
-                  <Button className="m-6" onClick={() => appendOption(a.id)}>
+                  <Button
+                    className="m-6"
+                    size="small"
+                    color="secondary"
+                    variant="contained"
+                    onClick={() => appendOption(a.id)}
+                  >
                     {" "}
-                    <AddCircleOutlinedIcon className="text-darkpurple" />{" "}
+                    Agregar horario
                   </Button>
                 </div>
               </Selector>

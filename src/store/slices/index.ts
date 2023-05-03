@@ -32,7 +32,7 @@ const initialState: WeekState = {
       options: [
         {
           priority: 1,
-          turns: [baseTurn],
+          turns: [baseTurn, baseTurn],
         },
       ],
     },
@@ -210,6 +210,8 @@ export const {
   removeOption,
   updateStartTime,
   updateEndTime,
+  addTurn,
+  removeTurn,
 } = activitySlice.actions;
 
 // selectors  ;

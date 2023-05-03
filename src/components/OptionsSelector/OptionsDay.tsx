@@ -33,17 +33,18 @@ const days = [
 interface Props {
   id: number;
   priority: number;
+  index: number;
 }
 
-const OptionsDay = ({ id, priority }: Props) => {
+const OptionsDay = ({ id, priority, index }: Props) => {
   const activities = useAppSelector(selectActivities);
   const dispatch = useAppDispatch();
 
-  const editDay = (id: number, priority: number, e: any) => {
+  const editDay = (e: any) => {
     e.preventDefault();
     const day = e.target.value as Day;
     console.log("dia: ", day);
-    dispatch(updateDay({ activityId: id, priority, day }));
+    dispatch(updateDay({ activityId: id, priority, day, index }));
   };
 
   return (
@@ -52,8 +53,10 @@ const OptionsDay = ({ id, priority }: Props) => {
       id="days"
       placeholder="Dia"
       className="bg-white w-fit text-darkpurple p-1 border-none rounded h-full my-1"
-      onChange={(e) => editDay(id, priority, e)}
-      value={weekDays.get(activities[id]?.options[priority - 1]?.day)}
+      onChange={(e) => editDay(e)}
+      value={weekDays.get(
+        activities[id]?.options[priority - 1]?.turns[index].day
+      )}
     >
       {days.map(({ label, value }) => (
         <option key={label} value={value}>
