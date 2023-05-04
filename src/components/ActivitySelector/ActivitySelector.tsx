@@ -61,6 +61,7 @@ const ActivitySelector = () => {
                     value={act.name}
                     className="bg-white border border-darkpurple rounded shadow mt-2 h-12 w-full p-2"
                     onChange={(e) => updateActivity(e, e.target.value, i)}
+                    autoFocus
                   />
                   <button
                     className="text-center"

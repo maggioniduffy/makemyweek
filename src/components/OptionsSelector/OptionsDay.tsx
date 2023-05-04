@@ -52,7 +52,7 @@ const OptionsDay = ({ id, priority, index }: Props) => {
       name="Dia"
       id="days"
       placeholder="Dia"
-      className="bg-white w-fit text-darkpurple p-1 border-none rounded h-full my-1"
+      className="bg-white w-fit text-darkpurple p-1 border-none rounded h-full my-auto mr-2"
       onChange={(e) => editDay(e)}
       value={weekDays.get(
         activities[id]?.options[priority - 1]?.turns[index].day

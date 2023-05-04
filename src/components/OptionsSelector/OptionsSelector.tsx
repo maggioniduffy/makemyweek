@@ -62,106 +62,117 @@ const OptionsSelector = () => {
 
   return (
     <Section id="options">
-      <div className="flex h-full w-fit m-auto place-items-center p-6 space-x-4 justify-start align-start">
-        {activities
-          .filter((a) => a.name.length > 2)
-          .map((a) => {
-            return (
-              <Selector key={a.id}>
-                <div className="flex flex-col space-y-2 w-full">
-                  <h4 className="text-2xl">
-                    {" "}
-                    Ingresa los distintos horarios que tenes para{" "}
-                    <b className="text-darkpurple"> {a.name}</b>
-                  </h4>
-                  <form className="flex flex-col place-items-center justify-center w-full">
-                    {a.options?.map((o) => {
-                      return (
-                        <div
-                          key={a.id + o.priority + ""}
-                          className="flex w-full p-2 border place-items-center justify-between space-y-2 p-1 rounded border-gray shadow"
-                        >
-                          <div className="h-full w-full flex flex-col place-items-center justify-start my-4">
-                            <h5 className="text-darkpurple rounded p-1 text-left">
-                              {" "}
-                              Horario {o.priority}
-                            </h5>
-                            <div className="my-2 flex flex-col">
+      <>
+        <div className="flex h-full w-fit m-auto place-items-center p-6 space-x-4 justify-start align-start">
+          {activities
+            .filter((a) => a.name.length > 2)
+            .map((a) => {
+              return (
+                <Selector key={a.id}>
+                  <div className="flex flex-col space-y-2 w-full">
+                    <h4 className="text-2xl">
+                      {" "}
+                      Ingresa los distintos horarios que tenes para{" "}
+                      <b className="text-darkpurple"> {a.name}</b>
+                    </h4>
+                    <form className="flex flex-col place-items-center justify-center w-full">
+                      {a.options?.map((o) => {
+                        return (
+                          <div
+                            key={a.id + o.priority + ""}
+                            className="flex w-full p-2 border place-items-center justify-between space-y-2 p-1 rounded border-gray shadow"
+                          >
+                            <div className="h-full w-full flex flex-col place-items-center justify-start my-4">
+                              <h5 className="text-darkpurple rounded p-1 text-center">
+                                {" "}
+                                Opcion {o.priority}
+                              </h5>
+                              <div className="my-2 flex flex-col">
+                                <Button
+                                  onClick={() => deleteOption(a.id, o.priority)}
+                                  size="small"
+                                  color="secondary"
+                                  variant="contained"
+                                >
+                                  Borrar opcion
+                                </Button>
+                              </div>
+                            </div>
+                            <div className="flex flex-col space-y-4">
+                              <div className="flex flex-col w-full place-items-center">
+                                {o.turns.map((t, i) => {
+                                  return (
+                                    <div
+                                      className="flex shadow-lg rounded p-2"
+                                      key={a.id + o.priority + i + ""}
+                                    >
+                                      <OptionsDay
+                                        id={a.id}
+                                        priority={o.priority}
+                                        index={i}
+                                      />
+                                      <OptionsTimeSelector
+                                        id={a.id}
+                                        priority={o.priority}
+                                        start
+                                        index={i}
+                                      />
+                                      <OptionsTimeSelector
+                                        id={a.id}
+                                        priority={o.priority}
+                                        index={i}
+                                      />
+                                      <Button
+                                        size="small"
+                                        color="secondary"
+                                        onClick={() =>
+                                          deleteTurn(a.id, o.priority, i)
+                                        }
+                                      >
+                                        Borrar horario
+                                      </Button>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+
                               <Button
-                                onClick={() => deleteOption(a.id, o.priority)}
+                                onClick={() => appendTurn(a.id, o.priority)}
                                 size="small"
                                 color="secondary"
-                                variant="contained"
                               >
-                                Borrar horario
+                                Agregar horario
                               </Button>
                             </div>
                           </div>
-                          <div className="flex flex-col space-y-4">
-                            <div className="flex flex-col w-full place-items-center">
-                              {o.turns.map((t, i) => {
-                                return (
-                                  <div
-                                    className="flex shadow-lg rounded p-2"
-                                    key={a.id + o.priority + i + ""}
-                                  >
-                                    <OptionsDay
-                                      id={a.id}
-                                      priority={o.priority}
-                                      index={i}
-                                    />
-                                    <OptionsTimeSelector
-                                      id={a.id}
-                                      priority={o.priority}
-                                      start
-                                      index={i}
-                                    />
-                                    <OptionsTimeSelector
-                                      id={a.id}
-                                      priority={o.priority}
-                                      index={i}
-                                    />
-                                    <Button
-                                      size="small"
-                                      color="secondary"
-                                      onClick={() =>
-                                        deleteTurn(a.id, o.priority, i)
-                                      }
-                                    >
-                                      Borrar dia
-                                    </Button>
-                                  </div>
-                                );
-                              })}
-                            </div>
-
-                            <Button
-                              onClick={() => appendTurn(a.id, o.priority)}
-                              size="small"
-                              color="secondary"
-                            >
-                              Agregar dia
-                            </Button>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </form>
-                  <Button
-                    className="m-6"
-                    size="small"
-                    color="secondary"
-                    variant="contained"
-                    onClick={() => appendOption(a.id)}
-                  >
-                    {" "}
-                    Agregar horario
-                  </Button>
-                </div>
-              </Selector>
-            );
-          })}
-      </div>
+                        );
+                      })}
+                    </form>
+                    <Button
+                      className="m-6"
+                      size="small"
+                      color="secondary"
+                      variant="contained"
+                      onClick={() => appendOption(a.id)}
+                    >
+                      {" "}
+                      Agregar opcion
+                    </Button>
+                  </div>
+                </Selector>
+              );
+            })}
+        </div>
+        <Button
+          className="absolute bottom-10"
+          color="secondary"
+          variant="contained"
+          href="/result"
+        >
+          {" "}
+          Ver calendario semanal{" "}
+        </Button>
+      </>
     </Section>
   );
 };
