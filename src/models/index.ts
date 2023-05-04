@@ -39,11 +39,11 @@ export interface Turn {
 export interface Option {
   priority: number;
   turns: Turn[];
+  comment?: string;
 }
 
 export interface Activity {
   id: number;
   name: string;
-  //options?: [Option];
   options: Option[];
 }

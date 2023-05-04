@@ -11,10 +11,12 @@ import Selector from "../Common/Selector";
 import Button from "@mui/material/Button";
 import OptionsTimeSelector from "./OptionsTime";
 import OptionsDay from "./OptionsDay";
+import { useState } from "react";
 
 const OptionsSelector = () => {
   const activities = useAppSelector(selectActivities);
   const dispatch = useAppDispatch();
+  const [comment, setComment] = useState<string | undefined>();
 
   if (
     activities.length <= 0 ||
@@ -23,7 +25,8 @@ const OptionsSelector = () => {
     return null;
   }
 
-  const appendOption = (id: number) => {
+  const appendOption = (e: any, id: number) => {
+    e.preventDefault();
     const options = activities[id].options!;
     dispatch(
       addOption({
@@ -43,9 +46,11 @@ const OptionsSelector = () => {
               day: 0,
             },
           ],
+          comment,
         },
       })
     );
+    setComment(undefined);
   };
 
   const deleteOption = (activityId: number, priority: number) => {
@@ -86,6 +91,12 @@ const OptionsSelector = () => {
                               <h5 className="text-darkpurple rounded p-1 text-center">
                                 {" "}
                                 Opcion {o.priority}
+                                {o.comment && (
+                                  <p className="text-sm1 font-bold">
+                                    {" "}
+                                    {o.comment}{" "}
+                                  </p>
+                                )}
                               </h5>
                               <div className="my-2 flex flex-col">
                                 <Button
@@ -148,16 +159,27 @@ const OptionsSelector = () => {
                         );
                       })}
                     </form>
-                    <Button
-                      className="m-6"
-                      size="small"
-                      color="secondary"
-                      variant="contained"
-                      onClick={() => appendOption(a.id)}
+                    <form
+                      className="flex"
+                      onSubmit={(e) => appendOption(e, a.id)}
                     >
-                      {" "}
-                      Agregar opcion
-                    </Button>
+                      <Button
+                        className="basis-1/3"
+                        size="small"
+                        color="secondary"
+                        variant="contained"
+                        onClick={(e) => appendOption(e, a.id)}
+                      >
+                        {" "}
+                        Agregar opcion
+                      </Button>
+                      <input
+                        className="w-full h-full mx-2 p-1 text-sm"
+                        placeholder="Comentario para la opcion, ejemplo: catedra, profesor, aula. (Opcional) "
+                        value={comment ? comment : ""}
+                        onChange={(e) => setComment(e.target.value)}
+                      />
+                    </form>
                   </div>
                 </Selector>
               );
