@@ -29,10 +29,11 @@ const initialState: WeekState = {
     {
       id: 0,
       name: "",
+      //options: [],
       options: [
         {
           priority: 1,
-          turns: [baseTurn, baseTurn],
+          turns: [baseTurn],
         },
       ],
     },

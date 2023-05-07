@@ -33,7 +33,7 @@ const Welcome = () => {
         {" "}
         Bienvenido!{" "}
       </h3>
-      <div className="bg-lightpink m-10 rounded-xl shadow animate__animated animate__pulse animate__delay-1s">
+      <div className="bg-lightpink m-4 md:mx-10 md:mt-10 rounded-xl shadow animate__animated animate__pulse animate__delay-1s">
         <h5 className="text-darkpurple m-4 text-xl">
           {" "}
           Comienza a preparar tu semana <b> desde ahora </b>
@@ -41,22 +41,24 @@ const Welcome = () => {
       </div>
 
       {!show ? (
-        <Button
-          color="secondary"
-          onClick={showHow}
-          className="m-3 text-white"
-          endIcon={<VisibilityRoundedIcon />}
-        >
-          {" "}
-          Como funciona?
-        </Button>
+        <div className="mb-4">
+          <Button
+            color="secondary"
+            onClick={showHow}
+            className="text-white mb-10"
+            endIcon={<VisibilityRoundedIcon />}
+          >
+            {" "}
+            Como funciona?
+          </Button>
+        </div>
       ) : (
         <Button color="secondary" onClick={hide} className="m-3 text-white">
           <VisibilityOffRoundedIcon />
         </Button>
       )}
       {show && (
-        <div className="flex w-full overflow-x-auto">
+        <div className="flex w-full overflow-x-auto justify-center">
           <HowCard
             order={"Primero"}
             text={"Ingresa tus actividades semanales"}
