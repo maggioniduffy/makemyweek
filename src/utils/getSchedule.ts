@@ -13,6 +13,7 @@ export async function getCalendar(activities: Array<Activity>) {
       score: 0,
       turns: [],
     };
-    aux.turns.push(a);
+    const temp = { activity: a, priority: a.options[0] };
+    aux.turns.push(temp);
   });
 }

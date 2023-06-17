@@ -85,18 +85,19 @@ const OptionsSelector = () => {
                         return (
                           <div
                             key={a.id + o.priority + ""}
-                            className="flex w-full p-2 border place-items-center justify-between space-y-2 p-1 rounded border-gray shadow"
+                            className="flex w-full p-2 border place-items-center justify-between space-y-2 p-1 rounded border-gray"
                           >
                             <div className="h-full w-full flex flex-col place-items-center justify-start my-4">
-                              <h5 className="text-darkpurple rounded p-1 text-center">
+                              <h5 className="text-darkpurple rounded p-1 text-center flex flex-col">
                                 {" "}
                                 Opcion {o.priority}
-                                {o.comment && (
-                                  <p className="text-sm1 font-bold">
-                                    {" "}
-                                    {o.comment}{" "}
-                                  </p>
-                                )}
+                                <p
+                                  contentEditable
+                                  className="text-xs w-full border rounded border-gray"
+                                  onChange={(e) => appendOption(e, a.id)}
+                                >
+                                  {o?.comment}
+                                </p>
                               </h5>
                               <div className="my-2 flex flex-col">
                                 <Button
@@ -114,7 +115,7 @@ const OptionsSelector = () => {
                                 {o.turns.map((t, i) => {
                                   return (
                                     <div
-                                      className="flex shadow-lg rounded p-2"
+                                      className="flex m-1 shadow rounded p-2"
                                       key={a.id + o.priority + i + ""}
                                     >
                                       <OptionsDay
