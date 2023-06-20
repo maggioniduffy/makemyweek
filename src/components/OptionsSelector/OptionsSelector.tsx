@@ -12,10 +12,12 @@ import Button from "@mui/material/Button";
 import OptionsTimeSelector from "./OptionsTime";
 import OptionsDay from "./OptionsDay";
 import { useState } from "react";
+import Link from "next/link";
 
 const OptionsSelector = () => {
   const activities = useAppSelector(selectActivities);
   const dispatch = useAppDispatch();
+  console.log(activities);
   const [comment, setComment] = useState<string | undefined>();
 
   if (
@@ -68,7 +70,7 @@ const OptionsSelector = () => {
   return (
     <Section id="options">
       <>
-        <div className="flex h-full w-fit m-auto place-items-center p-6 space-x-4 justify-start align-start">
+        <div className="flex flex-wrap mt-20 mx-auto justify-center align-center overflow-auto">
           {activities
             .filter((a) => a.name.length > 2)
             .map((a) => {
@@ -186,15 +188,17 @@ const OptionsSelector = () => {
               );
             })}
         </div>
-        <Button
-          className="absolute bottom-10"
-          color="secondary"
-          variant="contained"
-          href="/result"
-        >
-          {" "}
-          Ver calendario semanal{" "}
-        </Button>
+        <Link className="p-4" href={"/result"}>
+          <Button
+            className="w-fit mb-10"
+            color="secondary"
+            variant="contained"
+            href="/result"
+          >
+            {" "}
+            Ver calendario semanal{" "}
+          </Button>
+        </Link>
       </>
     </Section>
   );

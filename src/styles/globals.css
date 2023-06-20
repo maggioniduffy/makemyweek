@@ -109,3 +109,23 @@ body {
   background-attachment: fixed;
   background-size: cover;
 }
+
+@keyframes gSpace {
+  from {
+    width: 0%;
+    opacity: 0.5;
+  }
+  to {
+    width: 100;
+    opacity: 1;
+  }
+}
+
+.grayspace {
+  animation-name: gSpace;
+  animation-duration: 2s;
+  animation-direction: alternate-reverse;
+  animation-iteration-count: infinite;
+  background-color: #d3d3d3;
+  /* transition: background-color 0.5s ease; */
+}

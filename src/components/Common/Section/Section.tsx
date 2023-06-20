@@ -11,7 +11,7 @@ const Section = ({ id, next, children, disable = false }: Props) => {
   return (
     <div
       id={id}
-      className="h-screen flex flex-col place-items-center justify-center w-full overflow-x-auto"
+      className="min-h-screen flex flex-col place-items-center justify-center w-full overflow-x-auto"
     >
       {children}
       {next && <DownButton next={next} disable={disable} />}

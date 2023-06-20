@@ -3,6 +3,9 @@ import Head from "next/head";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import { AuxCalendar } from "@/components";
+import { getCalendar } from "@/utils/getSchedule";
+import { useAppSelector } from "@/hooks";
+import { selectActivities } from "@/store/slices";
 const inter = Inter({ subsets: ["latin"] });
 
 const result = () => {
