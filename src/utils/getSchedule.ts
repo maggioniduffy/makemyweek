@@ -34,9 +34,29 @@ function isCompatible(a: Turn, b: Turn) {
 export async function getCalendar(activities: Array<Activity>) {
   console.log("Acts", activities);
   let responses: Respond[] = []
-  activities.forEach((a) => {
-    a.options.forEach((o) => {
-      o.
+  let maxScoreAllowed = 999;
+  let firstAct = activities[0]
+  firstAct.options.forEach((o) => {
+    activities.slice(1).forEach((a) => {
+      o.turns.forEach((t) => {
+        a.options.forEach((ao) => {
+          let flag = true;
+          ao.turns.forEach((aot) => {
+            if (!isCompatible(aot,t)) {
+              flag = false;
+            }
+          })
+          if (flag) {
+            let score = o.priority + ao.priority
+            if (score < maxScoreAllowed) {
+              responses.push({
+                score,
+                turns: []
+              })
+            }
+          }
+        })
+      })
     })
   })
 }
