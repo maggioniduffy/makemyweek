@@ -13,6 +13,7 @@ import OptionsTimeSelector from "./OptionsTime";
 import OptionsDay from "./OptionsDay";
 import { useState } from "react";
 import Link from "next/link";
+import { getCalendar } from "@/utils/getSchedule";
 
 const OptionsSelector = () => {
   const activities = useAppSelector(selectActivities);
@@ -194,6 +195,7 @@ const OptionsSelector = () => {
             color="secondary"
             variant="contained"
             href="/result"
+            //onClick={getCalendar}
           >
             {" "}
             Ver calendario semanal{" "}
